@@ -1,51 +1,40 @@
 # 💭 Reflection: Game Glitch Investigator
 
-Answer each question in 3 to 5 sentences. Be specific and honest about what actually happened while you worked. This is about your process, not trying to sound perfect.
-
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+When I first ran the game, it looked functional, but several parts of the logic behaved incorrectly. The hints were reversed, so when my guess was too high, the game told me to guess higher instead of lower. I also noticed that the secret number behaved inconsistently and that some game state values were not reset properly after starting a new game.
 
-**Bug Reproduction Log**
+### Bug Reproduction Log
 
-Document at least 3 bugs you found. Add rows as needed.
-
-| Input | Expected Behavior | Actual Behavior | Console Output / Error |
-|-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Input                               | Expected Behavior                             | Actual Behavior                          | Console Output / Error                                            |
+| ----------------------------------- | --------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------- |
+| Guess larger than secret            | Game should say "Go LOWER!"                   | Game said "Go HIGHER!"                   | No error                                                          |
+| Guess smaller than secret           | Game should say "Go HIGHER!"                  | Game said "Go LOWER!"                    | No error                                                          |
+| Clicking New Game after winning     | Game should restart normally                  | Game stayed in the won state             | No error                                                          |
+| Submitting a guess on some attempts | Guess should be compared to an integer secret | TypeError because secret became a string | TypeError: '>' not supported between instances of 'int' and 'str' |
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+I used ChatGPT while working on this project. AI helped me understand the bugs and suggested ways to reorganize the code into `logic_utils.py`. One correct suggestion was fixing the reversed hints in the `check_guess()` function. I verified the fix by running the Streamlit application and checking that the messages matched the guesses.
+
+One incorrect or misleading suggestion involved import issues and file organization. Some suggestions did not immediately solve the problem, so I inspected the code and error messages myself. I learned that I needed to verify every AI suggestion instead of assuming it was correct.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+I decided that a bug was fixed only after testing the game manually and running pytest. I created tests for the `check_guess()` function to verify that guesses above the secret returned "Too High" and guesses below the secret returned "Too Low". Running pytest showed that the functions behaved as expected. AI helped me understand how to write the tests and how to interpret some of the error messages.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+I learned that Streamlit reruns the script every time the user interacts with the page. Session state allows information such as the secret number, score, and number of attempts to persist between reruns. I would explain it to a friend by saying that session state acts like memory for the application, while the rest of the script starts over every time a button is pressed.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+One strategy I want to reuse is fixing one bug at a time and testing after every change. This project showed me that making many changes at once can make debugging harder. Next time I work with AI, I will provide smaller and more focused prompts and verify each suggestion before applying it. This project taught me that AI-generated code should be treated as a starting point rather than something that should automatically be trusted.
